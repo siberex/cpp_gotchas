@@ -17,3 +17,6 @@ C++ and C tips, tricks, guidelines, pitfalls and gotchas
 https://web.archive.org/web/20240223211016/http://wordaligned.org/articles/cpp-streambufs
 
 https://cplusplus.com/reference/iolibrary/
+
+http://www.gotw.ca/gotw/048.htm
+
