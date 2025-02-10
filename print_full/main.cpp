@@ -4,6 +4,6 @@ int main() {
     std::cout << "Hello CPP" << std::endl;
 
     // fprintf(stdout, "Hello cstdio!\n");
-    // std::wcout << L"Hello CPP wcout" << std::endl; 
+    // std::wcout << L"Hello CPP wcout" << std::endl;
     return 0;
 }
