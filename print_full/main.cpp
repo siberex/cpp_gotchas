@@ -5,4 +5,3 @@ int main() {
     cout << "Hello CPP\n";
     return 0;
 }
-
