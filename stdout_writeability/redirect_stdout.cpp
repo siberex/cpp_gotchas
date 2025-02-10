@@ -1,7 +1,8 @@
 #include <fstream>
 #include <iostream>
  
-// g++ -std=c++11 rdbuf.cpp -o rdbuf
+// g++ -std=c++11 redirect_stdout.cpp -o redirect_stdout
+// see also https://web.archive.org/web/20240223211016/http://wordaligned.org/articles/cpp-streambufs
 int main() 
 { 
     std::ofstream ofs{"stdout.log"};

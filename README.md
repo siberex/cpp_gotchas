@@ -12,3 +12,8 @@ C++ and C tips, tricks, guidelines, pitfalls and gotchas
 
 [Bjarne Stroustrup's C++ Style and Technique FAQ](https://www.stroustrup.com/bs_faq2.html)
 
+## Stream buffers
+
+https://web.archive.org/web/20240223211016/http://wordaligned.org/articles/cpp-streambufs
+
+https://cplusplus.com/reference/iolibrary/
