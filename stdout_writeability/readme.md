@@ -18,6 +18,7 @@ $ ./rust
 Hello Rust
 
 # No errors from printf:
+# For Mac OS use redirect to /dev/urandom
 $ ./clang > /dev/full
 $
 # No errors from cout:
