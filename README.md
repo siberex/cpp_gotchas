@@ -1,10 +1,13 @@
 # cpp_gotchas
+
 C++ and C tips, tricks, guidelines, pitfalls and gotchas
 
 
-# Stuff top read
+# Stuff to read
 
 [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md)
+
+[C++ coder roadmap](https://roadmap.sh/cpp)
 
 ## Bjarne Stroustrup
 
