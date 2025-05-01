@@ -1,25 +1,16 @@
 #include <iostream>
-// #include <cstdio>
-// #include <cerrno>
+#include <system_error>
+#include <cerrno> // For errno
 
 int main() {
     std::cout << "Hello CPP" << std::endl;
     if (std::cout.fail()) {
-        
-        std::cerr << "Error writing to stdout" << std::endl;
+        std::error_code ec(errno, std::system_category());
+        std::cerr << "Error writing to standard output: " << ec.message()
+                  << " (Error code: " << ec.value() << ")" << std::endl;
         return 1;
     }
 
-    /*
-    fflush(stdout);
-    int result = fprintf(stdout, "Hello cstdio!\n");
-    if (result < 0) {
-        perror("Error writing to stdout");
-        if (result == ENOSPC) {...}
-        return 1;
-    }
-    */
-    
     /*
     std::locale::global(std::locale("en_US.UTF8"));
     std::wcout.imbue(std::locale());
@@ -30,6 +21,6 @@ int main() {
         return 1;
     }
     */
-
+    
     return 0;
 }
