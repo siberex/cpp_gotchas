@@ -1,32 +1,35 @@
-# Prerequisites
-*.d
+# CMake
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+CMakeUserPresets.json
+cmake-*
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Build artifacts
+build
+build-*
 
-# Precompiled Headers
-*.gch
-*.pch
+# clangd
+.cache/
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# GDB
+.gdb_history
 
-# Fortran module files
-*.mod
-*.smod
+# Bazel
+user.bazelrc
+/bazel-*
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# Pigweed
+pw_console-*logs.txt
+.pw_console.user.yaml
 
-# Executables
-*.exe
-*.out
-*.app
+# FB Infer
+infer-out/

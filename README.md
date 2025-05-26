@@ -1,13 +1,42 @@
 # cpp_gotchas
 
-C++ and C tips, tricks, guidelines, pitfalls and gotchas
+C++ and C basics, tips, tricks, guidelines, pitfalls and gotchas
+
+TODO:
+
+- consteval / constinit
+- STL & templates
+- thread_local
+
+# Cool stuff
+
+[Static-allocation coroutines](https://pigweed.dev/docs/blog/05-coroutines.html)
 
 
-# Stuff to read
+# C++20 novelties
 
-[C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md)
+- [Coroutines](https://en.cppreference.com/w/cpp/language/coroutines)
+
+- [Concepts](https://en.cppreference.com/w/cpp/language/constraints)
+    - [intro](https://quantdev.blog/posts/c++20-concepts/)
+    - [standard concepts library](https://en.cppreference.com/w/cpp/concepts.html)
+
+- [Modules](https://en.cppreference.com/w/cpp/language/modules)
+
+- [structured bindings](https://lemire.me/blog/2025/05/18/returning-several-values-from-a-function-in-c-c23-edition/)
+
+# Fundamentals
+
+[C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
 
 [C++ coder roadmap](https://roadmap.sh/cpp)
+
+- RAII
+- Copy/move semantics
+- Templates
+- Smart pointers
+- Virtual methods
+- [CTAD](https://en.cppreference.com/w/cpp/language/class_template_argument_deduction)
 
 ## Bjarne Stroustrup
 
