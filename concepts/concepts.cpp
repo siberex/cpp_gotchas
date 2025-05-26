@@ -7,11 +7,14 @@
 // Should be defined BEFORE the Printable concept definition.
 // Should be in the global namespace for Argument-Dependent Lookup (ADL) to find it.
 std::ostream& operator<<(std::ostream& out, const std::unordered_set<std::string>& set) {
-    bool isMultiple{};
-    for (const auto& item : set)
-        out << (isMultiple ? ", " : (isMultiple = true, "")) << item;
+    bool isFirst = true;
+    for (const auto& item : set) {
+        if (!isFirst) out << ", ";
+        // std::string item is Printable, no need to convert it
+        out << item;
+        isFirst = false;
+    }
     return out;
-
 }
 
 // Define a concept that requires a type to be printable with std::cout (i.e. streamable to std::ostream).
@@ -23,18 +26,26 @@ concept Printable = requires(std::ostream& os, const T& obj) {
 
 // Log function template using the Printable concept.
 // Flushes the buffer (intentionally).
-template<Printable... Args>
-void log(const Args&... objs) {
-    // Fold expression to print all arguments
-    (std::cout << ... << objs) << std::endl;
+namespace console {
+    template<Printable... Args>
+    void log(const Args&... objs) {
+        // Fold expression to print all arguments
+        (std::cout << ... << objs) << std::endl;
+    }
+}
+
+// Dynamically generate sample set
+std::unordered_set<std::string> getUnorderedSet() {
+    std::unordered_set<std::string> set = {"UP"};
+    set.insert({"DOWN", "LEFT"});
+    set.insert("RIGHT");
+    return set;
 }
 
 // Usage:
 int main() {
-    const auto eventsMapped = std::unordered_set<std::string>{"UP", "DOWN", "LEFT", "RIGHT"};
-
-    log("Events: ", eventsMapped);
-    log("An int: ", 123, ", a float: ", 3.14159265358979, ", and a char: ", 'X');
+    console::log("Events: ", getUnorderedSet());
+    console::log("An int: ", 123, ", a float: ", 3.14159265358979, ", and a char: ", 'X');
 
     return 0;
 }
