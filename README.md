@@ -15,6 +15,8 @@ TODO:
 
 # C++20 novelties
 
+→ https://github.com/AnthonyCalandra/modern-cpp-features/
+
 - [Coroutines](https://en.cppreference.com/w/cpp/language/coroutines)
 
 - [Concepts](https://en.cppreference.com/w/cpp/language/constraints)
@@ -38,7 +40,7 @@ TODO:
 - Virtual methods
 - [CTAD](https://en.cppreference.com/w/cpp/language/class_template_argument_deduction)
 
-## Bjarne Stroustrup
+## Bjarne Stroustrup FAQ
 
 [Bjarne Stroustrup's FAQ](https://www.stroustrup.com/bs_faq.html)
 
@@ -46,9 +48,10 @@ TODO:
 
 ## Stream buffers
 
-https://web.archive.org/web/20240223211016/http://wordaligned.org/articles/cpp-streambufs
+[Cout or printf?](https://web.archive.org/web/20240223211016/http://wordaligned.org/articles/cpp-streambufs)
 
-https://cplusplus.com/reference/iolibrary/
+[istream, ostream, streambuf, fstream, sstream](https://cplusplus.com/reference/iolibrary/)
 
-http://www.gotw.ca/gotw/048.htm
+[Switching Streams](http://www.gotw.ca/gotw/048.htm)
 
+[Input/output manipulators](https://www.cppreference.com/w/cpp/io/manip.html)
