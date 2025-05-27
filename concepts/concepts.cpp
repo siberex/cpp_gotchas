@@ -42,10 +42,28 @@ std::unordered_set<std::string> getUnorderedSet() {
     return set;
 }
 
+// Dummy Printable class
+class Ink {
+private:
+    std::string color;
+public:
+    explicit Ink(std::string color) : color(std::move(color)) {}
+    // Printable friend: the non-member function operator<< will have access to private members
+    friend std::ostream& operator<<(std::ostream& out, const Ink& ink);
+};
+
+// Overload the << operator to make Ink printable.
+// Must be in the std namespace.
+std::ostream& operator<<(std::ostream& out, const Ink& ink)
+{
+    using namespace std::literals;
+    return out << "Ink { color: "s << ink.color << " }"s;
+}
+
 // Usage:
 int main() {
     console::log("Events: ", getUnorderedSet());
-    console::log("An int: ", 123, ", a float: ", 3.14159265358979, ", and a char: ", 'X');
-
+    console::log("An int: ", 123, ", a float: ", 3.1415926535897932385L, ", and a char: ", 'X');
+    console::log(Ink{"orange"});
     return 0;
 }
