@@ -58,6 +58,10 @@ struct std::hash<IntOrString> {
 
 // Make IntOrString Printable
 std::ostream& operator<<(std::ostream& out, const IntOrString& val) {
+    // Could also be replaced with:
+    // std::visit([&out](const auto& v) { out << v; }, val);
+
+    // Note: explicit template parameter is needed for is_same_v() check inside:
     std::visit([&out]<typename IntOrString>(const IntOrString& v) {
         if constexpr (std::is_same_v<IntOrString, int>) {
             out << "i_";

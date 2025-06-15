@@ -12,12 +12,68 @@ TODO:
 
 [Static-allocation coroutines](https://pigweed.dev/docs/blog/05-coroutines.html)
 
+- Similar approach: https://github.com/jamboree/coz
+
+
+# C++26
+
+- [Contracts](https://en.cppreference.com/w/cpp/language/contracts.html)
+
+# C++23
+
+- [std::println](https://en.cppreference.com/w/cpp/io/println.html)
+
+    throws system_error if writing to the stream fails.
+
+- [if consteval](https://en.cppreference.com/w/cpp/language/if.html#Consteval_if)
+
+    ```cpp
+    if consteval { /* compile-time code */ } else { /* runtime code */ }
+    ```
+
+- `this` deduction for templates and explicit `this` parameter.
+
+    Allows member functions to deduce the type of `this` (e.g. whether it’s a reference, pointer, or const).
+
+    ```cpp
+    struct X {
+        // this deduction:
+        template<typename Self> void f(this Self&& self);
+        // Explicit this:
+        void f(this S& self) { /* use self */ }
+    };
+    ```
+
+- Multidimensional Subscript and `std::mdspan`
+
+    ```cpp
+    struct Matrix { int operator[](size_t i, size_t j) { return data[i * cols + j]; } };
+    // std::println( m[1uz, 2uz] );
+    ```
+
+- `std::expected<T, E>`, like `Result<T, E>` in Rust.
+
+- `z` and `uz` suffixes for `std::size_t` and `std::ssize_t`
+
+- `std::stacktrace`: `auto trace = std::stacktrace::current();`
+
+- `.and_then()`, `.transform()`, and `.or_else()` for `std::optional`:
+
+    ```cpp
+    std::optional<int> x = 5;
+    auto y = x.transform([](int v) { return v * 2; });
+    // y == std::optional<int>{10}
+    ```
 
 # C++20 novelties
 
 → https://github.com/AnthonyCalandra/modern-cpp-features/
 
-- [Coroutines](https://en.cppreference.com/w/cpp/language/coroutines)
+- [Coroutines](https://en.cppreference.com/w/cpp/language/coroutines) (stackless, unlike [Boost.Coroutine](https://www.boost.org/doc/libs/latest/libs/coroutine2/doc/html/coroutine2/intro.html))
+
+    Examples: https://github.com/dian-lun-lin/cpp_coroutine_examples
+
+    Boost.Cobalt provides [experimental context](https://www.boost.org/doc/libs/latest/libs/cobalt/doc/html/index.html#context) to make C++20 coroutines stackfull.
 
 - [Concepts](https://en.cppreference.com/w/cpp/language/constraints)
     - [intro](https://quantdev.blog/posts/c++20-concepts/)
@@ -25,9 +81,62 @@ TODO:
 
 - [Modules](https://en.cppreference.com/w/cpp/language/modules)
 
+- [constinit & consteval](https://www.cppstories.com/2022/const-options-cpp20/)
+
+    - constinit: comptime init, can be redeclared
+
+    - consteval: strict comptime constexpr, forces all calls to happen at compile time
+
+- [Ranges and pipes](https://en.cppreference.com/w/cpp/ranges.html)
+
+    ```с++
+    auto const ints = {0, 1, 2, 3, 4, 5};
+    auto even = [](int i) { return 0 == i % 2; };
+    auto square = [](int i) { return i * i; };
+    for (int i : ints | std::views::filter(even) | std::views::transform(square))
+        std::cout << i << ' ';  
+    ```
+
+- [std::accumulate](https://en.cppreference.com/w/cpp/algorithm/accumulate.html)
+
+    ```c++     
+    std::vector<int> v{1, 2, 3, 4};
+    int sum = std::accumulate(v.begin(), v.end(), 0);
+    ```
+
+- [std::format](https://en.cppreference.com/w/cpp/utility/format/format.html)
+
+- [std::span](./cpp20/span.cpp) — non-owning type, fat pointer (pointer with type size), kinda string_view for vectors.
+
+    Note: you must ensure the underlying data outlives the span.
+
+- `<=>` spaceship operator
+
+
+# C++17 novelties
+
+- [CTAD](https://en.cppreference.com/w/cpp/language/class_template_argument_deduction)
+
 - [structured bindings](https://lemire.me/blog/2025/05/18/returning-several-values-from-a-function-in-c-c23-edition/)
 
+    ```c++
+    for (const auto &[key, value] : map) {...}
+    ```
+
+    Like JS destructuring, but without element skipping.
+
+    See also: [std::tie](https://en.cppreference.com/w/cpp/utility/tuple/tie)
+
+- std::string_view
+
+- [filesystem library](https://en.cppreference.com/w/cpp/filesystem.html)
+
+- std::for_each
+
+
 # Fundamentals
+
+[C++ Best Practices](https://github.com/cpp-best-practices/cppbestpractices/)
 
 [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
 
@@ -38,7 +147,11 @@ TODO:
 - Templates
 - Smart pointers
 - Virtual methods
-- [CTAD](https://en.cppreference.com/w/cpp/language/class_template_argument_deduction)
+- lambda expressions
+- Implicit conversions
+- [CRTP, Curiously Recurring Template Pattern](https://en.cppreference.com/w/cpp/language/crtp.html)
+- (outdated) Compiler Macros — use consteval and constexpr
+- (outdated) [SFINAE](https://en.cppreference.com/w/cpp/language/sfinae.html) — use Concepts instead
 
 ## Bjarne Stroustrup FAQ
 
