@@ -12,6 +12,8 @@ TODO:
 
 [Static-allocation coroutines](https://pigweed.dev/docs/blog/05-coroutines.html)
 
+- Similar approach: https://github.com/jamboree/coz
+
 
 # C++26
 
@@ -25,12 +27,53 @@ TODO:
 
 - [if consteval](https://en.cppreference.com/w/cpp/language/if.html#Consteval_if)
 
+    ```cpp
+    if consteval { /* compile-time code */ } else { /* runtime code */ }
+    ```
+
+- `this` deduction for templates and explicit `this` parameter.
+
+    Allows member functions to deduce the type of `this` (e.g. whether it’s a reference, pointer, or const).
+
+    ```cpp
+    struct X {
+        // this deduction:
+        template<typename Self> void f(this Self&& self);
+        // Explicit this:
+        void f(this S& self) { /* use self */ }
+    };
+    ```
+
+- Multidimensional Subscript and `std::mdspan`
+
+    ```cpp
+    struct Matrix { int operator[](size_t i, size_t j) { return data[i * cols + j]; } };
+    // std::println( m[1uz, 2uz] );
+    ```
+
+- `std::expected<T, E>`, like `Result<T, E>` in Rust.
+
+- `z` and `uz` suffixes for `std::size_t` and `std::ssize_t`
+
+- `std::stacktrace`: `auto trace = std::stacktrace::current();`
+
+- `.and_then()`, `.transform()`, and `.or_else()` for `std::optional`:
+
+    ```cpp
+    std::optional<int> x = 5;
+    auto y = x.transform([](int v) { return v * 2; });
+    // y == std::optional<int>{10}
+    ```
 
 # C++20 novelties
 
 → https://github.com/AnthonyCalandra/modern-cpp-features/
 
-- [Coroutines](https://en.cppreference.com/w/cpp/language/coroutines)
+- [Coroutines](https://en.cppreference.com/w/cpp/language/coroutines) (stackless, unlike [Boost.Coroutine](https://www.boost.org/doc/libs/latest/libs/coroutine2/doc/html/coroutine2/intro.html))
+
+    Examples: https://github.com/dian-lun-lin/cpp_coroutine_examples
+
+    Boost.Cobalt provides [experimental context](https://www.boost.org/doc/libs/latest/libs/cobalt/doc/html/index.html#context) to make C++20 coroutines stackfull.
 
 - [Concepts](https://en.cppreference.com/w/cpp/language/constraints)
     - [intro](https://quantdev.blog/posts/c++20-concepts/)
@@ -63,16 +106,26 @@ TODO:
 
 - [std::format](https://en.cppreference.com/w/cpp/utility/format/format.html)
 
+- [std::span](./cpp20/span.cpp) — non-owning type, fat pointer (pointer with type size), kinda string_view for vectors.
+
+    Note: you must ensure the underlying data outlives the span.
+
+- `<=>` spaceship operator
+
 
 # C++17 novelties
 
 - [CTAD](https://en.cppreference.com/w/cpp/language/class_template_argument_deduction)
 
 - [structured bindings](https://lemire.me/blog/2025/05/18/returning-several-values-from-a-function-in-c-c23-edition/)
+
     ```c++
     for (const auto &[key, value] : map) {...}
     ```
-    Like JS destructuring, but without element skipping
+
+    Like JS destructuring, but without element skipping.
+
+    See also: [std::tie](https://en.cppreference.com/w/cpp/utility/tuple/tie)
 
 - std::string_view
 
@@ -96,6 +149,7 @@ TODO:
 - Virtual methods
 - lambda expressions
 - Implicit conversions
+- [CRTP, Curiously Recurring Template Pattern](https://en.cppreference.com/w/cpp/language/crtp.html)
 - (outdated) Compiler Macros — use consteval and constexpr
 - (outdated) [SFINAE](https://en.cppreference.com/w/cpp/language/sfinae.html) — use Concepts instead
 
