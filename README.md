@@ -110,7 +110,17 @@ TODO:
 
     Note: you must ensure the underlying data outlives the span.
 
+- Template [Requirements](https://en.cppreference.com/w/cpp/language/requires.html)
+
+    ```c++
+    template <int percent>
+    requires (percent >= 0 && percent <= 100)
+    struct RainChance{};
+    ```
+
 - `<=>` spaceship operator
+
+- std::iota
 
 
 # C++17 novelties
@@ -133,6 +143,12 @@ TODO:
 
 - std::for_each
 
+- [Execution policy](https://en.cppreference.com/w/cpp/algorithm/execution_policy_tag.html)
+
+    ```c++
+    std::sort(std::execution::par, v.begin(), v.end());
+    std::for_each(std::execution::par_unseq, v.begin(), v.end(), f);
+    ```
 
 # Fundamentals
 
@@ -143,12 +159,16 @@ TODO:
 [C++ coder roadmap](https://roadmap.sh/cpp)
 
 - RAII
-- Copy/move semantics
+- [lvalue, rvalue](https://en.cppreference.com/w/cpp/language/value_category.html)
+- Copy and move semantics
+    - [Copy elision](https://en.cppreference.com/w/cpp/language/copy_elision.html)
 - Templates
+- constexpr
 - Smart pointers
 - Virtual methods
 - lambda expressions
 - Implicit conversions
+- SIOF, Static Initialisation Order Fiasco
 - [CRTP, Curiously Recurring Template Pattern](https://en.cppreference.com/w/cpp/language/crtp.html)
 - (outdated) Compiler Macros — use consteval and constexpr
 - (outdated) [SFINAE](https://en.cppreference.com/w/cpp/language/sfinae.html) — use Concepts instead
