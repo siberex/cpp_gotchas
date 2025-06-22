@@ -59,11 +59,19 @@ TODO:
 
 - `.and_then()`, `.transform()`, and `.or_else()` for `std::optional`:
 
-    ```cpp
+    ```c++
     std::optional<int> x = 5;
     auto y = x.transform([](int v) { return v * 2; });
     // y == std::optional<int>{10}
     ```
+
+- [range_formatter](https://en.cppreference.com/w/cpp/utility/format/range_formatter.html#Range_format_specification)
+
+- [std::ranges::to](https://en.cppreference.com/w/cpp/ranges/to.html)
+
+  Example: [cpp23/range_formatter.cpp](./cpp23/range_formatter.cpp)
+
+- [std::ranges::iota](https://en.cppreference.com/w/cpp/algorithm/ranges/iota.html)
 
 # C++20 novelties
 
@@ -120,7 +128,7 @@ TODO:
 
 - `<=>` spaceship operator
 
-- std::iota
+- [std::ranges::views::iota](https://en.cppreference.com/w/cpp/ranges/iota_view.html)
 
 
 # C++17 novelties
