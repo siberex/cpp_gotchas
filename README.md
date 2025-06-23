@@ -174,12 +174,21 @@ TODO:
 - constexpr
 - Smart pointers
 - Virtual methods
+- [Variadic templates](https://en.wikipedia.org/wiki/Variadic_template) | [example1](./basics/variadic_template.cpp) | [example2](https://github.com/siberex/cpp_gotchas/blob/332813508e491f5f0c7d9a8fac0f9a69e01ca4e2/concepts/concepts.cpp#L96)
+  ```c++
+  template<typename... Args>
+  void func(Args... args) {}
+  ```
 - lambda expressions
 - Implicit conversions
 - SIOF, Static Initialisation Order Fiasco
 - [CRTP, Curiously Recurring Template Pattern](https://en.cppreference.com/w/cpp/language/crtp.html)
 - (outdated) Compiler Macros — use consteval and constexpr
 - (outdated) [SFINAE](https://en.cppreference.com/w/cpp/language/sfinae.html) — use Concepts instead
+
+# Links
+
+https://hackingcpp.com/
 
 ## Bjarne Stroustrup FAQ
 
