@@ -186,6 +186,12 @@ TODO:
 - (outdated) Compiler Macros — use consteval and constexpr
 - (outdated) [SFINAE](https://en.cppreference.com/w/cpp/language/sfinae.html) — use Concepts instead
 
+## Preprocessor tricks
+
+[X macro](https://en.wikipedia.org/wiki/X_macro)
+
+[Variadic macro](https://en.wikipedia.org/wiki/Variadic_macro_in_the_C_preprocessor)
+
 # Links
 
 https://hackingcpp.com/
