@@ -15,9 +15,13 @@ TODO:
 - Similar approach: https://github.com/jamboree/coz
 
 
-# C++26
+# C++26 upcoming
+
+- [Reflection](https://brevzin.github.io/c++/2025/06/26/json-reflection/)
 
 - [Contracts](https://en.cppreference.com/w/cpp/language/contracts.html)
+
+- [parallel range](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2025/p3179r8.html)
 
 # C++23
 
@@ -130,6 +134,7 @@ TODO:
 
 - [std::ranges::views::iota](https://en.cppreference.com/w/cpp/ranges/iota_view.html)
 
+- [math constants](https://en.cppreference.com/w/cpp/numeric/constants.html): `std::numbers::pi` etc.
 
 # C++17 novelties
 
@@ -173,7 +178,7 @@ TODO:
 - Templates
 - constexpr
 - Smart pointers
-- Virtual methods
+- [Virtual methods](https://learn.microsoft.com/en-us/cpp/cpp/virtual-functions) | [wiki](https://en.wikipedia.org/wiki/Virtual_function#C++)
 - [Variadic templates](https://en.wikipedia.org/wiki/Variadic_template) | [example1](./basics/variadic_template.cpp) | [example2](https://github.com/siberex/cpp_gotchas/blob/332813508e491f5f0c7d9a8fac0f9a69e01ca4e2/concepts/concepts.cpp#L96)
   ```c++
   template<typename... Args>
@@ -182,8 +187,8 @@ TODO:
 - lambda expressions
 - Implicit conversions
 - SIOF, Static Initialisation Order Fiasco
-- [CRTP, Curiously Recurring Template Pattern](https://en.cppreference.com/w/cpp/language/crtp.html)
-- (outdated) Compiler Macros — use consteval and constexpr
+- (outdated) [CRTP, Curiously Recurring Template Pattern](https://en.cppreference.com/w/cpp/language/crtp.html) — use [this deduction](https://en.cppreference.com/w/cpp/language/member_functions.html#Explicit_object_member_functions) when possible
+- (outdated) Preprocessor Macros — use consteval and constexpr when possible
 - (outdated) [SFINAE](https://en.cppreference.com/w/cpp/language/sfinae.html) — use Concepts instead
 
 ## Preprocessor tricks
@@ -195,6 +200,8 @@ TODO:
 # Links
 
 https://hackingcpp.com/
+
+https://caiorss.github.io/C-Cpp-Notes/
 
 ## Bjarne Stroustrup FAQ
 
