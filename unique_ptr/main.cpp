@@ -3,7 +3,7 @@
 
 class Resource {
 public:
-    Resource(const std::string& name) : name_(name) {
+    explicit Resource(const std::string& name) : name_(name) {
         std::cout << "Resource '" << name_ << "' acquired\n";
     }
     ~Resource() {
@@ -33,6 +33,7 @@ void inspectResource(const Resource& res) {
     res.use();
 }
 
+// g++ -std=c++11 main.cpp -o /tmp/smart_pointers && /tmp/smart_pointers
 int main() {
     // Create a unique_ptr owning a Resource
     std::unique_ptr<Resource> myResource(new Resource("File"));
@@ -46,8 +47,8 @@ int main() {
 
     // Pass a reference to inspectResource. Ownership remains with anotherResource.
     if (anotherResource) {
-        inspectResource(*anotherResource); // Dereference to get a reference
-        anotherResource->use();           // anotherResource still owns the object
+        inspectResource(*anotherResource);  // Dereference a pointer to get a reference
+        anotherResource->use();             // anotherResource still owns the object
     }
 
     return 0;

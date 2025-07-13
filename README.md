@@ -5,7 +5,6 @@ C++ and C basics, tips, tricks, guidelines, pitfalls and gotchas
 TODO:
 
 - consteval / constinit
-- STL & templates
 - thread_local
 
 # Cool stuff
@@ -116,7 +115,7 @@ TODO:
     int sum = std::accumulate(v.begin(), v.end(), 0);
     ```
 
-- [std::format](https://en.cppreference.com/w/cpp/utility/format/format.html)
+- [std::format](https://en.cppreference.com/w/cpp/utility/format/format.html) | [cheatsheet](https://github.com/paulkazusek/std_format_cheatsheet)
 
 - [std::span](./cpp20/span.cpp) — non-owning type, fat pointer (pointer with type size), kinda string_view for vectors.
 
@@ -163,6 +162,8 @@ TODO:
     std::for_each(std::execution::par_unseq, v.begin(), v.end(), f);
     ```
 
+- Guaranteed copy elision, aka mandatory RVO (return value optimization)
+
 # Fundamentals
 
 [C++ Best Practices](https://github.com/cpp-best-practices/cppbestpractices/)
@@ -175,7 +176,8 @@ TODO:
 - [lvalue, rvalue](https://en.cppreference.com/w/cpp/language/value_category.html)
 - Copy and move semantics
     - [Copy elision](https://en.cppreference.com/w/cpp/language/copy_elision.html)
-- Templates
+- [Templates](https://learn.microsoft.com/en-us/cpp/cpp/templates-cpp?view=msvc-170) | [wiki](https://en.wikipedia.org/wiki/Template_(C%2B%2B)) | [cppreference](https://en.cppreference.com/w/cpp/language/templates.html)
+- [STL](./basics/STL.md)
 - constexpr
 - Smart pointers
 - [Virtual methods](https://learn.microsoft.com/en-us/cpp/cpp/virtual-functions) | [wiki](https://en.wikipedia.org/wiki/Virtual_function#C++)
@@ -190,6 +192,10 @@ TODO:
 - (outdated) [CRTP, Curiously Recurring Template Pattern](https://en.cppreference.com/w/cpp/language/crtp.html) — use [this deduction](https://en.cppreference.com/w/cpp/language/member_functions.html#Explicit_object_member_functions) when possible
 - (outdated) Preprocessor Macros — use consteval and constexpr when possible
 - (outdated) [SFINAE](https://en.cppreference.com/w/cpp/language/sfinae.html) — use Concepts instead
+
+## Syntax quirks
+
+[Trailing return type](https://en.wikipedia.org/wiki/Trailing_return_type)
 
 ## Preprocessor tricks
 
