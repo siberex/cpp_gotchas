@@ -61,21 +61,44 @@ constexpr std::string hello = "¶ Hi 早安 🐳";
     return result;
 }
 
+/**
+ * Wide strings version.
+ *
+ * Usage:
+ *  std::locale::global( std::locale("en_US.UTF-8") );
+ *  std::wstring str1 = L"naïve 😀";
+ *  std::wcout << toUpper(str1) << L'\n';
+ *
+ * @param str mixed-case wide string input
+ * @param loc locale (optional)
+ * @return upper-case wide string
+ */
+[[nodiscard]] auto toUpper(const std::wstring& str, const std::locale& loc = std::locale()) -> std::wstring {
+    std::wstring result = str; // explicit copy ref
+    std::ranges::transform(
+        result,
+        result.begin(),
+        [&loc](const wchar_t c) { return std::toupper(c, loc); }
+        );
+    return result;
+}
 
 
 
 // g++ -std=c++20 strings.cpp -o /tmp/strings && /tmp/strings
 int main() {
-    // std::locale::global( std::locale("en_US.UTF-8") );
+    std::locale::global( std::locale("en_US.UTF-8") );
 
-    const std::string strTestSplit = "abc::de:XXX:fghi";
-    for (const auto& token: splitStringByChar(strTestSplit, ':')) {
-        std::cout << token << "\n";
-    }
+    // const std::string strTestSplit = "abc::de:XXX:fghi";
+    // for (const auto& token: splitStringByChar(strTestSplit, ':')) {
+    //     std::cout << token << "\n";
+    // }
 
-    //std::wstring strTestUpper = L"naïve";
-    //std::cout << std::format("narrow string: {} → {}\n", strTestUpper, toUpper(strTestUpper));
+    std::wstring strTestUpperWide = L"naïve";
+    std::wcout << std::format(L"wide string: {} → {}\n", strTestUpperWide, toUpper(strTestUpperWide, std::locale("en_US.UTF-8")));
 
+    // std::string strTestUpper = "naïve";
+    // std::cout << std::format("narrow string: {} → {}\n", strTestUpper, toUpper(strTestUpper));
 
     return 0;
 }
