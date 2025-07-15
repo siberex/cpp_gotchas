@@ -15,22 +15,24 @@ Operations are generalized enough to accept all appropriate data types.
 
 ## Containers
 
+bitset, pair, valarray
+
 ### Object Sequence
 
 array, vector, dequeue, list, forward_list, queue (FIFO), stack (LIFO), priority_queue
 
 ### Sets and Maps
 
-set, multiset (allows duplicates), unordered_set, unordered_multiset
+set, multiset (allows duplicates), unordered_set, unordered_multiset, hash_set, hash_multiset
 
-map,  multimap (allows duplicate keys), unordered_map, unordered_multimap
+map, multimap (allows duplicate keys), unordered_map, unordered_multimap, hash_map, hash_multimap
 
 
 ## Algorithms
 
 ### Query Algorithms
 
-accumulate, equal, count, find, find_if, search, min_element, max_element, is_sorted, partial_sum, is_permutation
+accumulate, equal, count, find, find_if, search, binary_search, lower_bound, min_element, max_element, is_sorted, partial_sum, is_permutation
 
 ### Sorting Algorithms
 
