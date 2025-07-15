@@ -61,8 +61,6 @@ const std::string hello = "¶ Hi 早安 🐳";
  * @param str mixed-case wide string input
  * @param loc locale (optional)
  * @return upper-case wide string
- *
- * @deprecated
  */
 [[nodiscard]] auto toUpper(const std::wstring &str, const std::locale &loc = std::locale()) -> std::wstring {
     std::wstring result = str; // explicit copy ref
@@ -85,7 +83,8 @@ const std::string hello = "¶ Hi 早安 🐳";
 [[nodiscard]] auto splitIntoCodePoints(const std::string_view &str) -> std::vector<std::string_view> {
     std::vector<std::string_view> codePoints;
 
-    for (size_t i = 0; i < str.size();) {
+    size_t i = 0;
+    while (i < str.size()) {
         // Read the leading byte as unsigned to avoid sign issues
         const unsigned char leadByte = static_cast<unsigned char>(str[i]);
 
