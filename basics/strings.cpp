@@ -85,6 +85,46 @@ const std::string hello = "¶ Hi 早安 🐳";
 }
 
 
+/**
+ * Split UTF-8 string into individual code points (each represented as a string, not char)
+ * See also: https://en.wikipedia.org/wiki/UTF-8#Description
+ *
+ * @param str UTF-8 string / string_view
+ * @return vector of string_views referencing each code point
+ */
+[[nodiscard]] auto splitIntoCodePoints(const std::string_view &str) -> std::vector<std::string_view> {
+    std::vector<std::string_view> codePoints;
+
+    for (size_t i = 0; i < str.size();) {
+        // Read the leading byte as unsigned to avoid sign issues
+        const unsigned char leadByte = static_cast<unsigned char>(str[i]);
+
+        // Determine sequence length from the leading byte
+        // Default is plain ASCII, U+0000 to U+007F, 1-byte length
+        size_t charLen = 1;
+
+        if (leadByte >= 0xF0) { // 4-byte sequence (U+10000 to U+10FFFF), 11110*** = 0xF0
+            charLen = 4;
+        } else if (leadByte >= 0xE0) { // 3-byte sequence (U+0800 to U+FFFF), 1110**** = 0xE0
+            charLen = 3;
+        } else if (leadByte >= 0xC0) { // 2-byte sequence (U+0080 to U+07FF), 110***** = 0xC0
+            charLen = 2;
+        }
+
+        // Ensure we don't exceed the string bounds
+        if (i + charLen > str.size()) {
+            // Probably string is malformed. Will use remaining bytes as a single codepoint
+            charLen = str.size() - i;
+        }
+
+        // Add the substring view and advance the index
+        codePoints.push_back(str.substr(i, charLen));
+        i += charLen;
+    }
+
+    return codePoints;
+}
+
 
 // g++ -std=c++20 strings.cpp -o /tmp/strings && /tmp/strings
 int main() {
@@ -99,11 +139,25 @@ int main() {
     );
 
     std::wstring strTestUpperWide = L"naïve";
-    std::wcout << std::format(L"wide string: {} → {}\n", strTestUpperWide, toUpper(strTestUpperWide, std::locale("en_US.UTF-8")));
+    std::wcout << std::format(
+        L"Wide string: {0} → {1}\n",
+        strTestUpperWide,
+        toUpper(strTestUpperWide, std::locale("en_US.UTF-8"))
+    );
     std::wcout.flush();
 
     std::string strTestUpper = "naïve";
-    std::cout << std::format("narrow string: {} → {}\n", strTestUpper, toUpper(strTestUpper));
+    std::cout << std::format(
+        "Narrow string: {0} → {1}\n",
+        strTestUpper,
+        toUpper(strTestUpper)
+    );
+
+    std::cout << std::format(
+        "Code points: \"{0}\" → {1}\n",
+        hello,
+        splitIntoCodePoints(hello)
+    );
 
     return 0;
 }
