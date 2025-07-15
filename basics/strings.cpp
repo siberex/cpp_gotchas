@@ -30,18 +30,6 @@
 const std::string hello = "¶ Hi 早安 🐳";
 
 
-[[nodiscard]] auto splitStringByChar(const std::string &str, const char delimiter = ' ') -> std::vector<std::string> {
-    std::vector<std::string> result;
-    std::istringstream streamWrapper(str);
-
-    std::string token;
-    while (std::getline(streamWrapper, token, delimiter)) {
-        result.push_back(token);
-    }
-
-    return result;
-}
-
 [[nodiscard]] auto toLower(const std::string &str) -> std::string {
     std::string result = str; // explicit copy ref
     std::ranges::transform(
@@ -73,8 +61,10 @@ const std::string hello = "¶ Hi 早安 🐳";
  * @param str mixed-case wide string input
  * @param loc locale (optional)
  * @return upper-case wide string
+ *
+ * @deprecated
  */
-[[nodiscard]] auto toUpper(const std::wstring& str, const std::locale& loc = std::locale()) -> std::wstring {
+[[nodiscard]] auto toUpper(const std::wstring &str, const std::locale &loc = std::locale()) -> std::wstring {
     std::wstring result = str; // explicit copy ref
     std::ranges::transform(
         result,
@@ -126,7 +116,22 @@ const std::string hello = "¶ Hi 早安 🐳";
 }
 
 
-auto splitString(const std::string_view &str, const std::string &delimiter = "") -> std::vector<std::string_view> {
+[[nodiscard]] auto splitString(const std::string_view &str, const char delimiter) -> std::vector<std::string_view> {
+    std::vector<std::string_view> result;
+    size_t start = 0;
+    size_t end = str.find(delimiter);
+
+    while (end != std::string_view::npos) {
+        result.push_back(str.substr(start, end - start));
+        start = end + 1;
+        end = str.find(delimiter, start);
+    }
+
+    result.push_back(str.substr(start));
+    return result;
+}
+
+[[nodiscard]] auto splitString(const std::string_view &str, const std::string &delimiter = "") -> std::vector<std::string_view> {
     std::vector<std::string_view> result;
 
     if (delimiter.empty()) {
@@ -156,7 +161,7 @@ int main() {
     std::cout << std::format(
         "Split by chr: {0} → {1}\n",
         strTestSplit,
-        splitStringByChar(strTestSplit, ':')
+        splitString(strTestSplit, ':')
     );
     std::cout << std::format(
         "Split by str: {0} → {1}\n",
@@ -165,6 +170,8 @@ int main() {
     );
     std::cout.flush();
 
+    // Note: wide strings functions are mostly deprecated
+    // See also: https://en.cppreference.com/w/cpp/locale/codecvt_utf8.html
     std::wstring strTestUpperWide = L"naïve";
     std::wcout << std::format(
         L"Wide string: {0} → {1}\n",

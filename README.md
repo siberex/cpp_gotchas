@@ -149,7 +149,7 @@ TODO:
 
     See also: [std::tie](https://en.cppreference.com/w/cpp/utility/tuple/tie)
 
-- std::string_view
+- [std::string_view](https://en.cppreference.com/w/cpp/string/basic_string_view.html)
 
 - [filesystem library](https://en.cppreference.com/w/cpp/filesystem.html)
 
