@@ -126,6 +126,27 @@ const std::string hello = "¶ Hi 早安 🐳";
 }
 
 
+auto splitString(const std::string_view &str, const std::string &delimiter = "") -> std::vector<std::string_view> {
+    std::vector<std::string_view> result;
+
+    if (delimiter.empty()) {
+        return splitIntoCodePoints(str);
+    }
+
+    size_t start = 0;
+    size_t end = str.find(delimiter);
+
+    while (end != std::string::npos) {
+        result.push_back(str.substr(start, end - start));
+        start = end + delimiter.length();
+        end = str.find(delimiter, start);
+    }
+
+    result.push_back(str.substr(start));
+    return result;
+}
+
+
 // g++ -std=c++20 strings.cpp -o /tmp/strings && /tmp/strings
 int main() {
     std::locale::global( std::locale("en_US.UTF-8") );
@@ -133,10 +154,16 @@ int main() {
 
     const std::string strTestSplit = "abc::de:XXX:fghi";
     std::cout << std::format(
-        "Split: {0} → {1}\n",
+        "Split by chr: {0} → {1}\n",
         strTestSplit,
         splitStringByChar(strTestSplit, ':')
     );
+    std::cout << std::format(
+        "Split by str: {0} → {1}\n",
+        strTestSplit,
+        splitString(strTestSplit, ":")
+    );
+    std::cout.flush();
 
     std::wstring strTestUpperWide = L"naïve";
     std::wcout << std::format(
@@ -156,8 +183,21 @@ int main() {
     std::cout << std::format(
         "Code points: \"{0}\" → {1}\n",
         hello,
-        splitIntoCodePoints(hello)
+        splitString(hello)
     );
 
+    std::cout << std::format(
+        "Split by space: \"{0}\" → {1}\n",
+        hello,
+        splitString(hello, " ")
+    );
+
+    std::cout << std::format(
+        "Split by 早安: \"{0}\" → {1}\n",
+        hello,
+        splitString(hello, "早安")
+    );
+
+    std::cout.flush();
     return 0;
 }
