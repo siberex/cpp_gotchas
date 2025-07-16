@@ -40,6 +40,12 @@ const std::string hello = "¶ Hi 早安 🐳";
     return result;
 }
 
+/**
+ * ASCII-only version.
+ *
+ * @param str input
+ * @return string
+ */
 [[nodiscard]] auto toUpper(const std::string &str) -> std::string {
     std::string result = str; // explicit copy ref
     std::ranges::transform(
@@ -85,8 +91,8 @@ const std::string hello = "¶ Hi 早安 🐳";
 
     size_t i = 0;
     while (i < str.size()) {
-        // Read the leading byte as unsigned to avoid sign issues
-        const unsigned char leadByte = static_cast<unsigned char>(str[i]);
+        // Cast the leading byte as char8_t (unsigned) to avoid sign issues
+        const char8_t leadByte = static_cast<char8_t>(str[i]);
 
         // Determine sequence length from the leading byte
         // Default is plain ASCII, U+0000 to U+007F, 1-byte length
@@ -151,46 +157,112 @@ const std::string hello = "¶ Hi 早安 🐳";
 }
 
 
-// g++ -std=c++20 strings.cpp -o /tmp/strings && /tmp/strings
+// Decode a string-represented UTF-8 code point from string into a UTF-32 character (4-byte fixed width)
+[[nodiscard]] auto decodeCodePoint(const std::string_view &codePoint) -> char32_t {
+    char32_t wChr = 0;
+
+    switch (codePoint.length()) {
+        case 1:
+            wChr = codePoint.at(0);
+            break;
+        case 2:
+            // Implicit cast from binary-manipulated chars to char32_t should be fine here
+            wChr = ((codePoint.at(0) & 0x1F) << 6)
+                 | (codePoint.at(1) & 0x3F);
+            break;
+        case 3:
+            wChr = ((codePoint.at(0) & 0x0F) << 12)
+                 | ((codePoint.at(1) & 0x3F) << 6)
+                 | (codePoint.at(2) & 0x3F);
+            break;
+        case 4:
+            wChr = ((codePoint.at(0) & 0x07) << 18)
+                 | ((codePoint.at(1) & 0x3F) << 12)
+                 | ((codePoint.at(2) & 0x3F) << 6)
+                 | (codePoint.at(3) & 0x3F);
+            break;
+        default:
+            wChr = 0xFFFD; // >4 bytes, invalid code point: �
+    }
+
+    return wChr;
+}
+
+// Encode a UTF-32 character into a string-represented UTF-8 code point
+// See also: https://en.wikipedia.org/wiki/UTF-8#Description
+[[nodiscard]] auto encodeUTF8(const char32_t wChr) -> std::string {
+    std::string result;
+
+    if (wChr <= 0x7F) {
+        // U+0000 to U+007F, 1-byte
+        result = static_cast<char8_t>(wChr);
+    } else if (wChr <= 0x7FF) {
+        // U+0080 to U+07FF, 2-byte
+        result = static_cast<char8_t>(0xC0 | ((wChr >> 6) & 0x1F));
+        result += static_cast<char8_t>(0x80 | (wChr & 0x3F));
+    } else if (wChr <= 0xFFFF) {
+        // U+0800 to U+FFFF, 3-byte
+        result = static_cast<char8_t>(0xE0 | ((wChr >> 12) & 0x0F));
+        result += static_cast<char8_t>(0x80 | ((wChr >> 6) & 0x3F));
+        result += static_cast<char8_t>(0x80 | (wChr & 0x3F));
+    } else if (wChr <= 0x10FFFF) {
+        // U+10000 to U+10FFFF, 4-byte
+        result = static_cast<char8_t>(0xF0 | ((wChr >> 18) & 0x07));
+        result += static_cast<char8_t>(0x80 | ((wChr >> 12) & 0x3F));
+        result += static_cast<char8_t>(0x80 | ((wChr >> 6) & 0x3F));
+        result += static_cast<char8_t>(0x80 | (wChr & 0x3F));
+    } else {
+        // Invalid code point (out of U+10FFFF range)
+        // Append replacement character U+FFFD
+        result = "�";
+    }
+
+    return result;
+}
+
+// Function to convert UTF-8 encoded string to uppercase
+// UTF-8 sequence → code points[] → wchar_t[] → toupper → join
+std::string toUpperCase(const std::string_view &str, const std::locale &loc = std::locale()) {
+    std::string result;
+    const auto codePoints = splitIntoCodePoints(str);
+
+    for (const std::string_view &codePoint : codePoints) {
+        // Decode to 4-byte char
+        const char32_t cp = decodeCodePoint(codePoint);
+        // Cast to wide char
+        const wchar_t chr = static_cast<wchar_t>(cp);
+        // Convert to uppercase using std::locale::toupper
+        const wchar_t upperChr = std::toupper<wchar_t>(chr, loc);
+        // Cast back to UTF-32 char
+        const char32_t upperCp = static_cast<char32_t>(upperChr);
+        // Encode to UTF-8 code point
+        result += encodeUTF8(upperCp);
+    }
+
+    return result;
+}
+
+
+// GCC:
+// g++ -std=c++23 strings.cpp -o /tmp/strings && /tmp/strings
+// Clang:
+// clang++ -std=c++23 -stdlib=libc++ strings.cpp -o /tmp/strings && /tmp/strings
 int main() {
     std::locale::global( std::locale("en_US.UTF-8") );
     std::wcout.imbue(std::locale());
 
     const std::string strTestSplit = "abc::de:XXX:fghi";
     std::cout << std::format(
-        "Split by chr: {0} → {1}\n",
+        "Split by chr: \"{0}\" → {1}\n",
         strTestSplit,
         splitString(strTestSplit, ':')
     );
     std::cout << std::format(
-        "Split by str: {0} → {1}\n",
+        "Split by str: \"{0}\" → {1}\n",
         strTestSplit,
         splitString(strTestSplit, ":")
     );
     std::cout.flush();
-
-    // Note: wide strings functions are mostly deprecated
-    // See also: https://en.cppreference.com/w/cpp/locale/codecvt_utf8.html
-    std::wstring strTestUpperWide = L"naïve";
-    std::wcout << std::format(
-        L"Wide string: {0} → {1}\n",
-        strTestUpperWide,
-        toUpper(strTestUpperWide, std::locale("en_US.UTF-8"))
-    );
-    std::wcout.flush();
-
-    std::string strTestUpper = "naïve";
-    std::cout << std::format(
-        "Narrow string: {0} → {1}\n",
-        strTestUpper,
-        toUpper(strTestUpper)
-    );
-
-    std::cout << std::format(
-        "Code points: \"{0}\" → {1}\n",
-        hello,
-        splitString(hello)
-    );
 
     std::cout << std::format(
         "Split by space: \"{0}\" → {1}\n",
@@ -199,10 +271,51 @@ int main() {
     );
 
     std::cout << std::format(
-        "Split by 早安: \"{0}\" → {1}\n",
+        "Split by UTF-8 sequence (早安): \"{0}\" → {1}\n",
         hello,
         splitString(hello, "早安")
     );
+
+    std::cout << std::format(
+        "Code points: \"{0}\" → {1}\n",
+        hello,
+        splitString(hello)
+    );
+
+    // Test cases including multi-codepoint mappings
+    std::string strTestUpper1 = "hello🌍world";
+    std::string strTestUpper2 = "naïve café";
+    std::string strTestUpper3 = "αβγδε"; // Greek
+    std::string strTestUpper4 = "привет мир"; // Cyrillic
+    std::string strTestUpper5 = "MixeD_CaSe1_ÄÖÜ #üñö!"; // Mixed latin
+    std::string strTestUpper6 = "Straße"; // German with ß, should be capitalized as ẞ
+    std::string strTestUpper7 = "æon+早安øӕ"; // Mixed with ligatures U+00E6, U+04D5
+
+
+    // Note: wide strings functions are mostly deprecated
+    // See also: https://en.cppreference.com/w/cpp/locale/codecvt_utf8.html
+    std::wstring strTestUpperWide = L"naïve æöñ привет🌍 αβγδε";
+    std::wcout << std::format(
+        L"Uppercase wide string: \"{0}\" → \"{1}\"\n",
+        strTestUpperWide,
+        toUpper(strTestUpperWide, std::locale("en_US.UTF-8"))
+    );
+    std::wcout.flush();
+
+    /*
+     * Meanwhile with Boost:
+     * #include <boost/locale.hpp>
+     * boost::locale::to_upper(str, "en_US.UTF-8");
+     */
+
+    std::cout << std::format("Generic string: \"{0}\" → \"{1}\"\n", strTestUpper1, toUpperCase(strTestUpper1));
+    std::cout << std::format("Latin diacritics: \"{0}\" → \"{1}\"\n", strTestUpper2, toUpperCase(strTestUpper2));
+    std::cout << std::format("Greek: \"{0}\" → \"{1}\"\n", strTestUpper3, toUpperCase(strTestUpper3));
+    std::cout << std::format("Cyrillic: \"{0}\" → \"{1}\"\n", strTestUpper4, toUpperCase(strTestUpper4));
+    std::cout << std::format("Mixed: \"{0}\" → \"{1}\"\n", strTestUpper5, toUpperCase(strTestUpper5));
+    std::cout << std::format("German: \"{0}\" → \"{1}\"\n", strTestUpper6, toUpperCase(strTestUpper6));
+    std::cout << std::format("Ligatures mixed: \"{0}\" → \"{1}\"\n", strTestUpper7, toUpperCase(strTestUpper7));
+
 
     std::cout.flush();
     return 0;
