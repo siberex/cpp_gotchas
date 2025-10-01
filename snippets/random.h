@@ -17,9 +17,8 @@ namespace sib {
     inline int getRandomInt(const int from, const int to) {
         std::random_device dev;
         std::mt19937 engine(dev());
-        std::uniform_int_distribution<int> distribution(from,to);
-        // return distribution(engine);
-        auto getRand = std::bind(distribution, engine);
+        std::uniform_int_distribution<int> distribution(from, to);
+        auto getRand = [&] { return distribution(engine); };
         return getRand();
     }
 
