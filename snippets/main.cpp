@@ -10,7 +10,10 @@
 
 int main() {
 
-        sib::fmt("{}", sib::getRandomInt(-20, -10));
-        sib::fmt("{}", sib::getRandomInt(10, 20));
-
+    sib::fmt("{}", sib::getRandomInt(-20, -10));
+    try {
+        sib::fmt("{}", sib::getRandomInt(20, 10));
+    } catch (const std::invalid_argument& e) {
+        sib::err(e.what());
+    }
 }

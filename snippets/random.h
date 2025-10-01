@@ -9,12 +9,15 @@
 #pragma once
 
 #include <random>
-#include <functional>
+#include <stdexcept>
 
 
 namespace sib {
 
     inline int getRandomInt(const int from, const int to) {
+        if (from > to) {
+            throw std::invalid_argument("getRandomInt: expected from <= to, provided: " + std::to_string(from) + " > " + std::to_string(to));
+        }
         std::random_device dev;
         std::mt19937 engine(dev());
         std::uniform_int_distribution<int> distribution(from, to);

@@ -42,10 +42,19 @@ namespace sib {
         (std::cout << ... << objs) << std::endl;
     }
 
+    template<Printable... T>
+    void err(const T&... objs) {
+        (std::cerr << ... << objs) << std::endl;
+    }
 
     template<typename... Args>
     void fmt(std::format_string<Args...> fmt, Args&&... args) {
         log( std::format(fmt, std::forward<Args>(args)...) );
+    }
+
+    template<typename... Args>
+    void fmtErr(std::format_string<Args...> fmt, Args&&... args) {
+        err( std::format(fmt, std::forward<Args>(args)...) );
     }
 
 } // namespace sib
