@@ -5,6 +5,7 @@
  * Created: 30 Sep 2025
  */
 
+#include "err.h"
 #include "log.h"
 #include "random.h"
 
@@ -15,5 +16,6 @@ int main() {
         sib::fmt("{}", sib::getRandomInt(20, 10));
     } catch (const std::invalid_argument& e) {
         sib::err(e.what());
+        sib::fmtErr("{}", sib::SomeError::Server);
     }
 }

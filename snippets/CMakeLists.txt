@@ -7,6 +7,7 @@ project(${PROJECT} CXX)
 
 add_executable(${PROJECT}
         main.cpp
+        err.h
         log.h
         random.h
 )
