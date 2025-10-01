@@ -10,7 +10,7 @@
 
 int main() {
 
-        auto neg = sib::getRandomInt(-20, -10);
-        sib::fmt("{}\n", neg);
+        sib::fmt("{}", sib::getRandomInt(-20, -10));
+        sib::fmt("{}", sib::getRandomInt(10, 20));
 
 }

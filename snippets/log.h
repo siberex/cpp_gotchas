@@ -11,6 +11,8 @@
 #include <concepts>
 #include <iostream>
 #include <unordered_set>
+#include <utility>
+#include <format>
 
 
 // Make std::unordered_set printable
@@ -43,7 +45,7 @@ namespace sib {
 
     template<typename... Args>
     void fmt(std::format_string<Args...> fmt, Args&&... args) {
-        log( std::format(fmt, args...) );
+        log( std::format(fmt, std::forward<Args>(args)...) );
     }
 
 } // namespace sib
