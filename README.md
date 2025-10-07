@@ -155,6 +155,10 @@ TODO:
 
 - std::for_each
 
+- [std::in_place](https://www.cppstories.com/2018/07/in-place-cpp17/)
+
+- [std::variant](https://www.cppstories.com/2018/06/variant/): union type replacement, could be used to return errors: `std::variant<T,E>` (before std::expected)
+
 - [std::optional](https://www.cppstories.com/2018/05/using-optional/)
 
     ```c++

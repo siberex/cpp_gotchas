@@ -12,3 +12,7 @@ add_executable(${PROJECT}_strings
 add_executable(${PROJECT}_variadic_template
         variadic_template.cpp
 )
+
+add_executable(${PROJECT}_copy_move
+        copy_move.cpp
+)
