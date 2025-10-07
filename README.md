@@ -155,6 +155,14 @@ TODO:
 
 - std::for_each
 
+- [std::optional](https://www.cppstories.com/2018/05/using-optional/)
+
+    ```c++
+    std::optional<int> x = 5;
+    auto y = x.value_or(0); // y == 5
+    if (!x.has_value()) return std::nullopt;
+    ```
+
 - [Execution policy](https://en.cppreference.com/w/cpp/algorithm/execution_policy_tag.html)
 
     ```c++
